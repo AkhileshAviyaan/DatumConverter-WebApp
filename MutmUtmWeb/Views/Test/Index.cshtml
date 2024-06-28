@@ -1,0 +1,9 @@
+﻿@model List<Person>
+
+<form asp-action="SubmitPerson" method="post">
+@*     <label>Select a Person:</label>
+    <select asp-for="SelectedPersonId" asp-items="@(new SelectList(Model, "Id", "Name"))">
+        <option value="">-- Select Person --</option>
+    </select> *@
+    <button type="submit">Submit</button>
+</form>

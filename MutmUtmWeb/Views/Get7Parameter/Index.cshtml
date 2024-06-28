@@ -1,0 +1,182 @@
+﻿@{
+	ViewData["Title"] = "Calculate7Parameter";
+}
+@model TransformConstant
+<div class="form-group w-100">
+	<form action="/Get7Parameter/UploadCsv" method="post" enctype="multipart/form-data">
+		<label>Input MUTM and UTM as Sample Data</label><br>
+		<div style="display: flex;">
+			<div style="flex: 1; margin-right: 10px;">
+				<label>Selected EllipsoidalConstant for 1st transformation:</label><br>
+				<select class="form-select" name="Ec1">
+					@if (Model.SelectedEc1 is null)
+					{
+						@* <option value="" selected disabled>Select EllipsoidalConstant</option> *@
+						<option value="Everest1830" selected>Everest1830</option>
+					}
+					else
+					{
+						<option value="@Model.SelectedEc1.Label" selected>@Model.SelectedEc1.Label</option>
+					}
+
+					@foreach (var item in Model.Ecs)
+					{
+						<option value="@item.Label">@item.Label</option>
+					}
+				</select>
+			</div>
+			<div style="flex: 1; margin-left: 10px;">
+				<label>Selected EllipsoidalConstant for 2nd transformation:</label><br>
+				<select class="form-select" name="Ec2">
+					@if (Model.SelectedEc2 is null)
+					{
+						@* <option value="" selected disabled>Select EllipsoidalConstant</option> *@
+						<option value="Wgs84" selected>Wgs84</option>
+					}
+					else
+					{
+						<option value="@Model.SelectedEc2.Label" selected>@Model.SelectedEc2.Label</option>
+					}
+
+					@foreach (var item in Model.Ecs)
+					{
+						<option value="@item.Label">@item.Label</option>
+					}
+				</select>
+			</div>
+		</div>
+
+		<div style="display: flex;">
+			<div style="flex: 1; margin-right: 10px;">
+				<label>Selected ProjectionConstant for 1st transformation:</label><br>
+				<select class="form-select" name="Pc1">
+					@if (Model.SelectedPc1 is null)
+					{
+						@* <option value="" selected disabled>Select ProjectionConstant</option> *@
+						<option value="Mutm84" selected>Mutm84</option>
+					}
+					else
+					{
+						<option value="@Model.SelectedPc1.Label" selected>@Model.SelectedPc1.Label</option>
+					}
+
+					@foreach (var item in Model.Pcs)
+					{
+						<option value="@item.Label">@item.Label</option>
+					}
+				</select>
+			</div>
+			<div style="flex: 1; margin-left: 10px;">
+				<label>Selected ProjectionConstant for 2nd transformation:</label><br>
+				<select class="form-select" name="Pc2">
+					@if (Model.SelectedPc2 is null)
+					{
+						@* <option value="" selected disabled>Select ProjectionConstant</option> *@
+						<option value="Utm45" selected>Utm45</option>
+					}
+					else
+					{
+						<option value="@Model.SelectedPc2.Label" selected>@Model.SelectedPc2.Label</option>
+					}
+
+					@foreach (var item in Model.Pcs)
+					{
+						<option value="@item.Label">@item.Label</option>
+					}
+				</select>
+			</div>
+		</div>
+		<label>Input file path</label>
+		@if (Model.FilePath is null)
+		{
+			<input type="text" name="filePath" value="D:\Akhilesh_Project\AfterJestha2081\MutmUtmConversionWebApp\MutmUtmWebApp\MutmUtmWeb\Src\Data\NEH_data.csv">
+		}
+		else
+		{
+			<input type="text" name="filePath" value="@Model.FilePath">
+		}
+		<button type="submit">Submit</button>
+	</form>
+	<div style="display: flex;">
+		<div style="flex: 1; margin-right: 10px;">
+			<label>NEH for First Transformation</label><br>
+			<table class=" table table-bordered table-striped">
+				<tr>
+					<th>North</th>
+					<th>East</th>
+					<th>Height</th>
+				</tr>
+				@if (Model.NehRead is not null)
+				{
+					@foreach (var item in Model.NehRead.NehInMUTM)
+					{
+						<tr>
+							<td>@item.N</td>
+							<td>@item.E</td>
+							<td>@item.H</td>
+						</tr>
+					}
+				}
+			</table>
+		</div>
+		<div style="flex: 1; margin-left: 10px;">
+			<label>NEH for Second Transformation</label><br>
+			<table class="table table-bordered table-striped">
+				<tr>
+					<th>North</th>
+					<th>East</th>
+					<th>Height</th>
+				</tr>
+				@if (Model.NehRead is not null)
+				{
+					@foreach (var item in Model.NehRead.NehInUTM)
+					{
+						<tr>
+							<td>@item.N</td>
+							<td>@item.E</td>
+							<td>@item.H</td>
+						</tr>
+					}
+				}
+			</table>
+		</div>
+	</div>
+	@if (Model.NehRead is not null)
+	{
+		<button onclick="hide()" type="submit">Calculate Seven Parameter</button>
+
+		<div id="maindiv" style="flex: 1; margin-left: 10px;display:none;">
+			<label>Calculate Seven Parameter</label><br>
+			<table class="table table-bordered table-striped">
+				<tr>
+					<th>Tx(m)</th>
+					<th>Ty(m)</th>
+					<th>Tz(m)</th>
+					<th>Rx(sec)</th>
+					<th>Ry(sec)</th>
+					<th>Rz(sec)</th>
+					<th>S(ppm)</th>
+				</tr>
+				@if (Model.SevenParameters is not null)
+				{
+					<tr>
+						<td>@Model.SevenParameters.Tx</td>
+						<td>@Model.SevenParameters.Ty</td>
+						<td>@Model.SevenParameters.Tz</td>
+						<td>@Model.SevenParameters.RxInSec</td>
+						<td>@Model.SevenParameters.RyInSec</td>
+						<td>@Model.SevenParameters.RzInSec</td>
+						<td>@Model.SevenParameters.SInPpm</td>
+					</tr>
+				}
+			</table>
+		</div>
+	}
+</div>
+<script>
+	function hide(){
+		debugger;
+		var idname=$('#maindiv')
+		idname.show();
+	}
+</script>
