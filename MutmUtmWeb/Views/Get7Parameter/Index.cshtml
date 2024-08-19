@@ -1,5 +1,8 @@
 ﻿@{
 	ViewData["Title"] = "Calculate7Parameter";
+	string relativePath = Directory.GetCurrentDirectory().Replace(@"\\", @"\");
+	string NehDataPath = relativePath + @"\Src\Data\NEH_data.csv";
+	ViewData["NehDataPath"] = NehDataPath;
 }
 @model TransformConstant
 <div class="form-group w-100">
@@ -89,7 +92,7 @@
 		<label>Input file path</label>
 		@if (Model.FilePath is null)
 		{
-			<input type="text" name="filePath" value="D:\Akhilesh_Project\AfterJestha2081\MutmUtmConversionWebApp\MutmUtmWebApp\MutmUtmWeb\Src\Data\NEH_data.csv">
+			<input type="text" name="filePath" value=@ViewData["NehDataPath"]>
 		}
 		else
 		{

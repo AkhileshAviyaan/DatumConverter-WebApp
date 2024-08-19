@@ -1,8 +1,14 @@
 ﻿@{
 	ViewData["Title"] = "CalculateNEH";
+	string relativePath = Directory.GetCurrentDirectory().Replace(@"\\", @"\");
+	string Mutm = relativePath + @"\Src\Data\mutm.csv";
+	string Utm45 = relativePath + @"\Src\Data\7parameter.csv";
+	ViewData["Mutm84"] = Mutm;
+	ViewData["Utm45"] = Utm45;
 }
 @model TransformConstant
 <div class="form-group w-100">
+	string relativePath=Directory.GetCurrentDirectory();
 	<form action="/GetNEH/UploadCsv" method="post" enctype="multipart/form-data">
 		<label>Input MUTM and UTM as Sample Data</label><br>
 		<div style="display: flex;">
@@ -90,7 +96,7 @@
 				<label>Input NEH file path</label>
 				@if (Model.FilePath is null)
 				{
-					<input type="text" name="filePath" value="D:\Akhilesh_Project\AfterJestha2081\MutmUtmConversionWebApp\MutmUtmWebApp\MutmUtmWeb\Src\Data\mutm.csv">
+					<input type="text" name="filePath" value=@ViewData["Mutm84"]>
 				}
 				else
 				{
@@ -101,7 +107,7 @@
 				<label>Input Seven file path</label>
 				@if (Model.ParameterPath is null)
 				{
-					<input type="text" name="parameterPath" value="D:\Akhilesh_Project\AfterJestha2081\MutmUtmConversionWebApp\MutmUtmWebApp\MutmUtmWeb\Src\Data\7parameter.csv">
+					<input type="text" name="parameterPath" value=@ViewData["Utm45"]>
 				}
 				else
 				{
